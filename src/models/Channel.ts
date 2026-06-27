@@ -1,16 +1,10 @@
 import mongoose from "mongoose";
 
 const ChannelSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  name: { type: String, required: true, unique: true },
   description: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.models.Channel || mongoose.model("Channel", ChannelSchema);
