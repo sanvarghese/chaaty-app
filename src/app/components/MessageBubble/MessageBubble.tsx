@@ -1,43 +1,18 @@
-"use client";
-
-import { formatDistanceToNow } from "date-fns";
-
 interface MessageBubbleProps {
-  message: {
-    _id: string;
-    content: string;
-    user: {
-      name: string;
-      image: string;
-    };
-    createdAt: string;
-  };
+  message: { _id: string; content: string; user: { _id: string; name: string; image: string }; createdAt: string };
 }
 
 export function MessageBubble({ message }: MessageBubbleProps) {
-  const isOwn = false; // Add logic to check if message is from current user
-
+  const time = new Date(message.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   return (
-    <div className={`flex gap-3 ${isOwn ? "flex-row-reverse" : ""}`}>
-      <img
-        src={message.user.image || "/default-avatar.png"}
-        alt={message.user.name}
-        className="w-8 h-8 rounded-full flex-shrink-0"
-      />
-      <div className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}>
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-sm">{message.user.name}</span>
-          <span className="text-xs text-gray-500">
-            {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
-          </span>
+    <div className="flex gap-3 px-2 py-1.5 rounded-lg hover:bg-gray-50 group">
+      <img src={message.user?.image || "/default-avatar.png"} alt={message.user?.name} className="w-9 h-9 rounded-md shrink-0 mt-0.5" />
+      <div className="min-w-0">
+        <div className="flex items-baseline gap-2">
+          <span className="font-semibold text-sm text-gray-900">{message.user?.name || "Unknown"}</span>
+          <span className="text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition">{time}</span>
         </div>
-        <div className={`p-3 rounded-lg max-w-2xl ${
-          isOwn 
-            ? "bg-blue-500 text-white" 
-            : "bg-gray-100 text-gray-800"
-        }`}>
-          {message.content}
-        </div>
+        <p className="text-sm text-gray-800 whitespace-pre-wrap break-words">{message.content}</p>
       </div>
     </div>
   );
