@@ -50,4 +50,4 @@ export async function POST(
 
   const populated = await message.populate("user", "name image");
   return NextResponse.json(populated, { status: 201 });
-}
+}  
